@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+option go_package = "./proto";
+
+package greet_service;
+
+// Have a service called GreetService, which has rpc methods Say Hello for postman
+service GreetService{
+    rpc SayHello (NoParam) returns (HelloResponse);
+
+    // streaming server, takes in a NamesList and returns a stream of HelloResponse messages 
+    rpc SayHelloServerStreaming(NamesList) returns (stream HelloResponse);
+
+    // streaming client, takes in a stream of HelloRequest messages and returns a single MessageList message
+    rpc SayHelloClientStreaming(stream HelloRequest) returns (MessagesList);
+
+    // bi-directional streaming, takes in a stream of HelloRequest messages and returns a stream of HelloResponse messages
+    rpc SayHelloBiDirectionalStreaming(stream HelloRequest) returns (stream HelloResponse);
+}
+
+message NoParam{};
+
+message HelloResponse{
+    string message = 1;
+}
+
+message NamesList{
+    string name = 1;
+}
+
+message HelloRequest{
+    string name = 1;
+}
+
+message MessagesList{
+    repeated string messages = 1;
+}
